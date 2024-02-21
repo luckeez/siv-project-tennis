@@ -1,12 +1,11 @@
 from ultralytics import YOLO
-from PIL import Image
 import cv2
-import torchvision
 import time
 import numpy as np
 
 model = YOLO("yolov8n.pt")
 
+# performance evaluation
 counter_racket = 0
 counter_no = 0
 
@@ -77,6 +76,7 @@ while True:
         # wait until any key is pressed
         cv2.waitKey(-1)
 
+# performance evaluation
 print(f"Rackets: {counter_racket}")
 print(f"No racket: {counter_no}")
 
