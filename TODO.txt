@@ -1,0 +1,41 @@
+PROGETTO DI PARTENZA
+
+- detect ball
+- draw trajectory
+- write direction
+- write bounce/out
+
+FINORA
+
+- correct direction
+- find field from color (not fixed coordinates), ENTIRE field
+- find lines - find longest lines (right and left)
+- 
+
+TODO
+
+- detect single field (find_field + find_lines?)
+- 2d field and ball projection
+- try yolo to find tennis racket
+
+
+
+
+RESULTS
+
+- single predict djokovic:
+racket yes: 107
+racket no: 252
+
+- doppio predict djokovic:
+racket yes: 122
+racket no: 237
+
+- single predict rune:
+racket yes: 36
+racket no: 323
+
+- double predict rune:
+racket yes: 45
+racket no: 314
+
