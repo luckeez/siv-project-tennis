@@ -90,9 +90,6 @@ while True:
     if not ret:
         break
 
-    roi_frame = frame[ROI["minX"]:ROI["maxX"], ROI["minY"]:ROI["maxY"]]
-    cv2.imshow("ROI", roi_frame)
-
     # values to define the three areas of our video.
     frame_height = frame[ROI["minX"]:ROI["maxX"], ROI["minY"]:ROI["maxY"]].shape[0]/3
     frame_height_middle_region = frame_height*2
@@ -153,9 +150,6 @@ while True:
     cv2.drawContours(contour_img, countours, -1, (0, 255, 0), 2) 
     cv2.imshow("Contours", contour_img)
 
-    orig_frame = np.copy(frame)
-    
-
     # check there is ateast one countour
     if len(countours) > 0:
         # we get the ball coordinates and radius
@@ -201,8 +195,6 @@ while True:
     row = str(len(pts))+";"+str(dt)+";"+str(camera_timer)+";"+str(camera_timer-dt)+"\n"
     file1.write(row)
     #file1.write("ciao")
-
-
 
 
     # if there are enough points
@@ -280,7 +272,6 @@ while True:
         cv2.putText(frame, insideCourt, (10, 50), cv2.FONT_HERSHEY_SIMPLEX,
                     0.65, (255, 255, 0), 3)
 
-    cv2.imshow("orig", orig_frame)
     cv2.imshow("Frame", frame)
     key = cv2.waitKey(1) & 0xFF
 
@@ -290,9 +281,6 @@ while True:
     if key == ord('p'):
         # wait until any key is pressed
         cv2.waitKey(-1)
-    if key == ord('s'):
-        # save image
-        cv2.imwrite("my_img/mid_img_2.jpg", orig_frame)
 
 
 file1.close()

@@ -12,7 +12,7 @@ counter_no = 0
 # img = cv2.imread('my_img/mid_img.jpg') 
 # img = torchvision.io.read_image("./sample.jpg")
 
-vs = cv2.VideoCapture("tennis_match_2.mp4")
+vs = cv2.VideoCapture("../tennis_match_2.mp4")
 
 # video file to warm up
 time.sleep(2.0)

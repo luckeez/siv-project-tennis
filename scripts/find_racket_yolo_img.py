@@ -1,14 +1,10 @@
 from ultralytics import YOLO
-from PIL import Image
 import cv2
-import torchvision
-import time
 import numpy as np
 
 model = YOLO("yolov8n.pt")
 
 frame = cv2.imread('my_img/mid_img_2.jpg') 
-# img = torchvision.io.read_image("./sample.jpg")
 
 roi_frame = frame[500:950, 200:1700]
 
