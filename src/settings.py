@@ -29,6 +29,25 @@ BUFFER_POINTS = 2
 # we need a mask for the area of the court, the points are based on the ROI
 COURT_MASK_POINTS = np.array([(267, 141), (25, 681), (1422, 686), (1161, 144)])
 
+SCALA_2D = 1.395
+
+# Parameters for 2d projection
+# Coefficients for polynomial interpolation of y coordinate
+COEFF = {
+    "a": 0.0000031904,
+    "b": 0.00477667,
+    "c": 3.419626,
+    "d": 303.38164
+}
+
+# Fixed parameters for x coordinate computation
+B15 = 314
+SCALA_X = (401-128)/(1104-314)
+D15 = 128
+E13 = 400
+FACTOR = 0.109079
+B7 = 715
+
 
 
 

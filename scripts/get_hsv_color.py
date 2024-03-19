@@ -18,7 +18,7 @@ def mouseRGB(event,x,y,flags,param):
         print("Coordinates of pixel: X: ",x,"Y: ",y)
  
 # Read an image, a window and bind the function to window
-image = cv2.imread("blue_field.jpg") #name of image
+image = cv2.imread("my_img/mid_img.jpg") #name of image
 cv2.namedWindow('mouseRGB')
 cv2.setMouseCallback('mouseRGB',mouseRGB)
  

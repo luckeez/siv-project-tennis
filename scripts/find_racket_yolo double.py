@@ -31,21 +31,21 @@ while True:
 
     results = model(roi_frame)
 
-# # **** double predict ****
+# **** double predict ****
 
-#     x1 = int(results[0][0].boxes.xyxy.T[0])
-#     y1 = int(results[0][0].boxes.xyxy.T[1])
-#     x2 = int(results[0][0].boxes.xyxy.T[2])
-#     y2 = int(results[0][0].boxes.xyxy.T[3])
+    x1 = int(results[0][0].boxes.xyxy.T[0])
+    y1 = int(results[0][0].boxes.xyxy.T[1])
+    x2 = int(results[0][0].boxes.xyxy.T[2])
+    y2 = int(results[0][0].boxes.xyxy.T[3])
 
-#     person_frame = roi_frame[0:y2+30, x1-100:x2+100]
+    person_frame = roi_frame[0:y2+30, x1-100:x2+100]
 
-#     results_racket = model(person_frame)
+    results_racket = model(person_frame)
 
-# # ***************************
+# ***************************
 
-    #cls = results_racket[0].boxes.cls  # double predict
-    cls = results[0].boxes.cls   # single predict
+    cls = results_racket[0].boxes.cls  # double predict
+    #cls = results[0].boxes.cls   # single predict
 
     classes = set()
     for c in cls:
@@ -56,8 +56,8 @@ while True:
     else:
         counter_no += 1
 
-    annotated_frame = results[0].plot()  # single predict
-    #annotated_frame = results_racket[0].plot()   # double predict
+    #annotated_frame = results[0].plot()  # single predict
+    annotated_frame = results_racket[0].plot()   # double predict
     cv2.imshow("Detection", annotated_frame)
 
     # for r in results:

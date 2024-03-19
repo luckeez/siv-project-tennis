@@ -17,6 +17,7 @@ TODO
 - detect single field (find_field + find_lines?)
 - 2d field and ball projection
 - try yolo to find tennis racket
+- yolo: last detected racket before bounce if forehand or backhand or serve
 
 
 
@@ -38,4 +39,8 @@ racket no: 323
 - double predict rune:
 racket yes: 45
 racket no: 314
+
+
+- 2d projection
+
 

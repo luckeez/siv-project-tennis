@@ -1,24 +1,26 @@
-from collections import namedtuple
+import numpy as np
+import math
 
-Pos = namedtuple("Pos", ["x", "y"])
+x = 915
+y = 384
 
-class Pallina:
-    def __init__(self, x=0, y=0):
-        """
-        Inizializza una nuova pallina con le coordinate x e y a 0.
-        """
-        self.x = x
-        self.y = y
-    
-    def set_pos(self, x, y):
-        self.x = x
-        self.y = y
 
-# Esempio di utilizzo
-pallina = Pallina()
+COEFF = {
+    "a": 0.0000031904,
+    "b": 0.00477667,
+    "c": 3.419626,
+    "d": 303.38164
+}
+B15 = 314
+SCALA_X = (401-128)/(1104-314)
+D15 = 128
+E13 = 400
+FACTOR = 0.109079
+B7 = 715
 
-pallina.set_pos(2, 1)
 
-# Accedere alle coordinate
-print(f"Coordinata x: {pallina.x}")
-print(f"Coordinata y: {pallina.y}")
+
+y_2d = int(pow(y, 3)*COEFF["a"]-pow(y, 2)*COEFF["b"]+y*COEFF["c"]-COEFF["d"])
+x_2d = int((x-B15)*SCALA_X+D15 - (y_2d-400)*FACTOR*np.sign(x-B7)*(abs(x-B7)>200))
+x_2d
+

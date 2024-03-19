@@ -17,11 +17,55 @@ def parse_args():
     args = vars(ap.parse_args())
     return args
 
+def find_court_mask_points(src):
+    src = cv2.GaussianBlur(src, (5, 5), 0)
+    
+    dst = cv2.Canny(src, 100, 200, None, 3)
+      
+    linesP = cv2.HoughLinesP(dst, 1, np.pi/180, 80, None, 400, 20)
+
+    v_lines = []
+    
+    if linesP is not None:
+        for i in range(0, len(linesP)):
+            l = linesP[i][0]
+            if abs(l[1] - l[3]) > 100:   # Extract vertical lines
+                v_lines.append(l)
+
+    left_line = None
+    right_line = None
+
+    if v_lines[0][0] < v_lines[1][0]:
+        left_line = v_lines[0]
+        right_line = v_lines[1]
+    else:
+        left_line = v_lines[1]
+        right_line = v_lines[0]
+    
+    xl = int(left_line[2] - ((left_line[2] - left_line[0]) * (right_line[3] - left_line[3])) / (left_line[1] - left_line[3]))
+    xr = int(right_line[2] - ((right_line[2] - right_line[0]) * (right_line[3] - left_line[3])) / (right_line[3] - right_line[1]))
+    
+    p1 = (left_line[2], left_line[3])
+    p2 = (xl, right_line[3])
+    p3 = (xr, left_line[3])
+    p4 = (right_line[2], right_line[3])
+
+    court_points = np.array([p1, p2, p3, p4])
+
+    return court_points
+
+
+def draw_field_lines(frame, cmp):
+    cv2.line(frame, cmp[0], cmp[1], (0,255,0), 2, cv2.LINE_AA)
+    cv2.line(frame, cmp[1], cmp[3], (0,255,0), 2, cv2.LINE_AA)
+    cv2.line(frame, cmp[2], cmp[3], (0,255,0), 2, cv2.LINE_AA)
+    cv2.line(frame, cmp[2], cmp[0], (0,255,0), 2, cv2.LINE_AA)
+                               
 
 def preprocess(frame, tennis_field, backgroundSubtractor):
 
-    roi_frame = frame[ROI["minX"]:ROI["maxX"], ROI["minY"]:ROI["maxY"]]
-    cv2.imshow("ROI", roi_frame)
+    #roi_frame = frame[ROI["minX"]:ROI["maxX"], ROI["minY"]:ROI["maxY"]]
+    #cv2.imshow("ROI", roi_frame)
 
     # we blur our frame for possible noise
     blurred = cv2.GaussianBlur(frame, (ODD_BLUR, ODD_BLUR), 0)
@@ -92,6 +136,10 @@ def find_ball(frame, countours, tennis_field, ball):
     ((x, y), radius) = cv2.minEnclosingCircle(c)
     M = cv2.moments(c)
 
+    # # DEVEL
+    # print(f"x: {x}, y: {y}")
+
+
     # we define the green lower threshold depending on where the ball was last seen
     if y < frame_height-OFFSET and y < frame_height_middle_region:
         tennis_field.greenLower = TOP_GREEN_LOWER
@@ -117,9 +165,19 @@ def find_ball(frame, countours, tennis_field, ball):
     ball.x = x
     ball.y = y
 
+    # DEVEL
+    # y_2d = int((int(y) - 116) * SCALA_2D + 34)
+    # x_2d = 200
+
+    y_2d = int(pow(y, 3)*COEFF["a"]-pow(y, 2)*COEFF["b"]+y*COEFF["c"]-COEFF["d"])
+    x_2d = int((x-B15)*SCALA_X+D15 - (y_2d-400)*FACTOR*np.sign(x-B7)*(abs(x-B7)>200))
+
+    ball.set_2d_pos(x_2d, y_2d)
+
+    print(f"x: {int(x)}, y: {int(y)}   -----   x_2d: {x_2d}, y_2d: {y_2d}")
 
 
-def draw_trajectory(frame, tennis_field, ball, timer):
+def draw_trajectory(frame, tennis_field, ball, timer, court_mask_points):
     est_vel = [0,0]
 
     for i in np.arange(1, len(tennis_field.pts)):
@@ -163,6 +221,8 @@ def draw_trajectory(frame, tennis_field, ball, timer):
             est_vel[0] = dX / timer.dt
             est_vel[1] = dY / timer.dt
 
+            ball.bounce = False
+
             # check if the sign of the velocity has changed
             if np.sign(est_vel[0]) != np.sign(ball.prev_est_vel[0]) or np.sign(est_vel[1]) != np.sign(ball.prev_est_vel[1]):
                 dvx = abs(est_vel[0] - ball.prev_est_vel[0])
@@ -170,7 +230,7 @@ def draw_trajectory(frame, tennis_field, ball, timer):
                 change_vel = math.sqrt(dvx*dvx + dvy*dvy)
                 if change_vel > BOUNCE_TRESH:
                     ballInsideOutsideTest = cv2.pointPolygonTest(
-                        COURT_MASK_POINTS, (ball.x, ball.y), False)
+                        court_mask_points, (ball.x, ball.y), False)
                     # -1 is outside, 1 is inside and 0 is on the contour
                     # outside
                     tennis_field.insideCourt = ""
@@ -182,6 +242,7 @@ def draw_trajectory(frame, tennis_field, ball, timer):
                     cv2.putText(frame[200:900,
                                         250:1700], "Bounce!", (int(ball.x) + 20, int(ball.y) - 20), cv2.FONT_HERSHEY_COMPLEX, 0.7,
                                 (0, 255, 0), 2)
+                    ball.bounce = True
 
             # update previous state trackers
             ball.prev_est_vel = est_vel[:]
