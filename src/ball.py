@@ -7,6 +7,9 @@ class Ball():
         self.x_2d = 0
         self.y_2d = 0
         self.bounce = False
+        self.dx = 0
+        self.dy = 0
+        self.djoko = False
         pass
 
     def set_pos(self, x, y):
@@ -18,3 +21,6 @@ class Ball():
         self.x_2d = x_2d
         self.y_2d = y_2d
         pass
+
+    def set_dx(self, dx):
+        self.dx = dx

@@ -62,8 +62,6 @@ while True:
     field_2d_img = np.copy(court_img)
     cv2.circle(field_2d_img, (ball.x_2d, ball.y_2d), 3, (255, 0, 255), 2)
 
-    
-
     cv2.imshow("Frame", frame)
     cv2.imshow("Field_2d", field_2d_img)
 

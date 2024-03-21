@@ -9,6 +9,10 @@ model = YOLO("yolov8n.pt")
 counter_racket = 0
 counter_no = 0
 
+x_pers = 0
+x_racket = 0
+shot = ""
+
 # img = cv2.imread('my_img/mid_img.jpg') 
 # img = torchvision.io.read_image("./sample.jpg")
 
@@ -29,35 +33,39 @@ while True:
     roi_frame = frame[500:950, 200:1700] # Djokovic
     #roi_frame = frame[150:400, 450:1450] # Rune
 
-    results = model(roi_frame)
+    results = model(roi_frame)  # YOLO PREDICT
 
-# # **** double predict ****
+    # cls = results[0].boxes.cls   # single predict
 
-#     x1 = int(results[0][0].boxes.xyxy.T[0])
-#     y1 = int(results[0][0].boxes.xyxy.T[1])
-#     x2 = int(results[0][0].boxes.xyxy.T[2])
-#     y2 = int(results[0][0].boxes.xyxy.T[3])
+    # classes = set()
+    # for c in cls:
+    #     classes.add(model.names[int(c)])
 
-#     person_frame = roi_frame[0:y2+30, x1-100:x2+100]
+    # if "tennis racket" in classes:
+    #     counter_racket += 1
+    # else:
+    #     counter_no += 1
 
-#     results_racket = model(person_frame)
 
-# # ***************************
 
-    #cls = results_racket[0].boxes.cls  # double predict
-    cls = results[0].boxes.cls   # single predict
+    for r in results[0]:
+        if r.boxes.cls == 0:
+            x_pers = int(r.boxes.xywh.T[0])
+        elif r.boxes.cls == 38:
+            x_racket = int(r.boxes.xywh.T[0])
+    
+    print(x_pers)
+    print(x_racket)
 
-    classes = set()
-    for c in cls:
-        classes.add(model.names[int(c)])
-
-    if "tennis racket" in classes:
-        counter_racket += 1
+    if x_racket < x_pers:
+        shot = "Backhand"
     else:
-        counter_no += 1
+        shot = "Forehand"
 
     annotated_frame = results[0].plot()  # single predict
-    #annotated_frame = results_racket[0].plot()   # double predict
+
+    cv2.putText(annotated_frame, shot, (50, 50), cv2.FONT_HERSHEY_COMPLEX, 0.7, (0, 255, 0), 2)
+
     cv2.imshow("Detection", annotated_frame)
 
     # for r in results:

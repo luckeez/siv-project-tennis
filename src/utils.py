@@ -134,7 +134,7 @@ def find_ball(frame, countours, tennis_field, ball):
     # we get the ball coordinates and radius
     c = max(countours, key=cv2.contourArea)
     ((x, y), radius) = cv2.minEnclosingCircle(c)
-    M = cv2.moments(c)
+    M = cv2.moments(c) # to find the blob center
 
     # # DEVEL
     # print(f"x: {x}, y: {y}")
@@ -153,7 +153,7 @@ def find_ball(frame, countours, tennis_field, ball):
 
     # If its a valid point we save the value and print some visual information on screen
     if M["m00"] != 0:
-        center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
+        center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))  
         if radius > 1:
             frame_roi = frame[ROI["minX"]:ROI["maxX"], ROI["minY"]:ROI["maxY"]]
             cv2.circle(frame_roi, (int(x), int(y)),
@@ -174,7 +174,7 @@ def find_ball(frame, countours, tennis_field, ball):
 
     ball.set_2d_pos(x_2d, y_2d)
 
-    print(f"x: {int(x)}, y: {int(y)}   -----   x_2d: {x_2d}, y_2d: {y_2d}")
+    #print(f"x: {int(x)}, y: {int(y)}   -----   x_2d: {x_2d}, y_2d: {y_2d}")
 
 
 def draw_trajectory(frame, tennis_field, ball, timer, court_mask_points):
@@ -222,6 +222,7 @@ def draw_trajectory(frame, tennis_field, ball, timer, court_mask_points):
             est_vel[1] = dY / timer.dt
 
             ball.bounce = False
+            ball.djoko = False
 
             # check if the sign of the velocity has changed
             if np.sign(est_vel[0]) != np.sign(ball.prev_est_vel[0]) or np.sign(est_vel[1]) != np.sign(ball.prev_est_vel[1]):
@@ -239,13 +240,15 @@ def draw_trajectory(frame, tennis_field, ball, timer, court_mask_points):
                     else:
                         tennis_field.insideCourt += "Inside"
 
-                    cv2.putText(frame[200:900,
-                                        250:1700], "Bounce!", (int(ball.x) + 20, int(ball.y) - 20), cv2.FONT_HERSHEY_COMPLEX, 0.7,
-                                (0, 255, 0), 2)
                     ball.bounce = True
+                    
+                if dY < -DJOKO_THRESH:
+                    ball.djoko = True
 
             # update previous state trackers
             ball.prev_est_vel = est_vel[:]
+
+            ball.set_dx(dX)
 
             # reset camera timer
             timer.camera_timer = 0

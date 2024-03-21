@@ -10,11 +10,10 @@ FINORA
 - correct direction
 - find field from color (not fixed coordinates), ENTIRE field
 - find lines - find longest lines (right and left)
-- 
+- detect single field (find_field + find_lines?)
 
 TODO
 
-- detect single field (find_field + find_lines?)
 - 2d field and ball projection
 - try yolo to find tennis racket
 - yolo: last detected racket before bounce if forehand or backhand or serve
