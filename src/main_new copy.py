@@ -52,6 +52,7 @@ count_text = 0
 counter_racket = 0
 counter_no = 0
 count_djoko = 0
+current_shot = ""
 
 # infinite loop till video ends or 'q' is pressed
 while True:
@@ -111,8 +112,9 @@ while True:
         cv2.circle(court_img, (ball.x_2d, ball.y_2d), 3, (0, 255, 0), 2)
         #cv2.putText(frame, shot, (50, 50), cv2.FONT_HERSHEY_COMPLEX, 0.7, (0, 255, 0), 2)
         count_text = MAX_TEXT_FRAMES
-        if ball.djoko:
-            count_djoko = MAX_TEXT_FRAMES              
+        if ball.djoko and count_djoko == 0:
+            count_djoko = MAX_DJOKO_FRAMES 
+            current_shot = shot          
     
     if count_text > 0:
         cv2.putText(frame[200:900, 250:1700], "Bounce!", (int(ball.x) + 20, int(ball.y) - 20), cv2.FONT_HERSHEY_COMPLEX, 0.7, (0, 255, 0), 2)
@@ -121,34 +123,36 @@ while True:
         
     if count_djoko > 0:
         count_djoko -= 1
-        if count_djoko == 1:
-            if shot=="Forehand":
+        if count_djoko == MAX_DJOKO_FRAMES-2:
+            if ball.y < 250 and ball.y > 200:  
+                current_shot = "Serve"
+                shot_dir = ""
+            elif ball.y < 200:
+                current_shot = ""
+                shot_dir = ""
+            elif shot=="Forehand":
                 if ball.x < X_THRESHOLD_LEFT:
-                    #if ball.dx < SHOT_THRESHOLD:
                     if ball.dx < 0:
                         shot_dir = "Inside In"
                     elif ball.dx > SHOT_THRESHOLD_DX:
-                        dhot_dir = "Inside Out"
+                        shot_dir = "Inside Out"
                     else:
                         shot_dir = "Center"
                 elif ball.x > X_THRESHOLD_RIGHT:
                     if ball.dx < -SHOT_THRESHOLD_DX:
-                        shot_dir = "Cross"
+                        shot_dir = "Cross-court"
                     elif ball.dx > -SHOT_THRESHOLD_DX/2:
                         shot_dir = "Down the line"
                     else:
                         shot_dir = "Center"
-                        #print(f"x = {ball.x} - dx = {ball.dx}")
                 else:
                     shot_dir = "Center"
-                    #print(f"x = {ball.x} - dx = {ball.dx}")
             elif shot == "Backhand":
                 if ball.x < X_THRESHOLD_LEFT:
                     if ball.dx < SHOT_THRESHOLD_DX/2:
                         shot_dir = "Down the line"
-                        print(f"down: {ball.dx}")
                     elif ball.dx > SHOT_THRESHOLD_DX:
-                        dhot_dir = "Cross"
+                        shot_dir = "Cross-court"
                     else:
                         shot_dir = "Center"
                 elif ball.x > X_THRESHOLD_RIGHT:
@@ -164,9 +168,9 @@ while True:
                 shot == ""
 
         
-        var = str(f"x = {ball.x} - dx = {ball.dx}")
+        var = str(f"y = {ball.y} - dx = {ball.dx}")
         
-        cv2.putText(frame, shot, (50, 100), cv2.FONT_HERSHEY_COMPLEX, 0.7, (0, 255, 0), 2)
+        cv2.putText(frame, current_shot, (50, 100), cv2.FONT_HERSHEY_COMPLEX, 0.7, (0, 255, 0), 2)
         cv2.putText(frame, shot_dir, (50, 150), cv2.FONT_HERSHEY_COMPLEX, 0.7, (0, 255, 0), 2)
         cv2.putText(frame, var, (50, 200), cv2.FONT_HERSHEY_COMPLEX, 0.7, (0, 255, 0), 2)
     #    count_djoko-=1
