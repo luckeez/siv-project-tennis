@@ -21,10 +21,10 @@ For more info, visit the project GitHub [CIT](apowdk).
 
 - Correction of tennis ball **direction** 
 - Script to find the tennis field perimeter, using color (entire field, including alleys)
-- Detect single field lines and perimeter, using line detection
-- Projection of the tennis ball in a 2d field, from a top view.
-- Detection of bottom player's shots (backhand, forehand, serve) using YOLOv8 to detect his tennis racket
-- Identification of the type of shot made by the bottom player, based on position and estimated direction (center, cross-court, down-the-line, inside-in, inside-out).
+- Detect single field lines and **perimeter**, using line detection
+- Projection of the tennis ball in a **2d field**, from a top view.
+- Detection of bottom player's **shots** (backhand, forehand, serve) using YOLOv8 to detect his tennis racket
+- Identification of the **type of shot** made by the bottom player, based on position and estimated direction (center, cross-court, down-the-line, inside-in, inside-out).
 
 # Getting started
 
