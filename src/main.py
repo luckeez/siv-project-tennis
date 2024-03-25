@@ -75,9 +75,9 @@ while True:
         draw_trajectory(frame, tennis_field, ball, timer, court_mask_points)
     
     if ball.bounce:
-        cv2.circle(court_img, (ball.x_2d, ball.y_2d), 3, (0, 255, 0), 2)
-        #cv2.putText(frame, shot, (50, 50), cv2.FONT_HERSHEY_COMPLEX, 0.7, (0, 255, 0), 2)
-        counter.count_text = MAX_TEXT_FRAMES
+        if counter.count_text == 0:
+            cv2.circle(court_img, (ball.x_2d, ball.y_2d), 3, (0, 255, 0), 2)
+            counter.count_text = MAX_TEXT_FRAMES
         if ball.djoko and counter.count_djoko == 0:
             counter.count_djoko = MAX_DJOKO_FRAMES 
             tennis_field.current_shot = tennis_field.shot          
