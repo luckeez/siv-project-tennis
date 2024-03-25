@@ -12,7 +12,7 @@ def main():
         "maxY": 1700
     }
     
-    default_file = 'my_img/mid_img_2.jpg'
+    default_file = 'my_img/original_img.jpg'
     #default_file = 'my_img/blue_field.jpg'
     # Loads an image
     image = cv.imread(default_file)
@@ -64,27 +64,6 @@ def main():
     court_points = np.array([p1, p2, p3, p4])
 
     print(court_points)
-
-    COURT_MASK_POINTS = np.array([(267, 141), (25, 681), (1422, 686), (1161, 144)])
-
-    # cv.line(cdstP, (633, 315), (460, 844), (0,255,0), 3, cv.LINE_AA)
-    # cv.line(cdstP, (1475, 844), (1282, 315), (0,255,0), 3, cv.LINE_AA)
-
-    # cv.line(cdstP, (267, 141), (25, 681), (0,255,0), 3, cv.LINE_AA)
-    # cv.line(cdstP, (1475, 844), (1161, 144), (0,255,0), 3, cv.LINE_AA)
-    
-    # pts = np.array([ [field_lines[0][0], field_lines[0][1]], 
-    #                 [field_lines[0][2], field_lines[0][3]],
-    #                 [field_lines[1][0], field_lines[1][1]],
-    #                 [field_lines[1][2], field_lines[0][1]] ],
-    #                 np.int32)
-    
-
-    # mask = np.zeros(src.shape[:2], dtype="uint8")
-    # cv.fillConvexPoly(mask, pts, color=(255,255,255))
-    # masked = cv.bitwise_and(src, src, mask=mask)
-
-    # cv.imshow("Fil", masked)
     
     cv.imshow("Source", dst)
     cv.imshow("Detected Lines (in red) - Probabilistic Line Transform", cdstP)

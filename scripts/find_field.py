@@ -5,14 +5,6 @@ from operator import itemgetter
 
 SOGLIA = 10
 
-ROI = {
-    "minX": 200,
-    "maxX": 900,
-    "minY": 250,
-    "maxY": 1700
-}
-COURT_MASK_POINTS = np.array([(267, 141), (25, 681), (1422, 686), (1161, 144)])
-
 def find_field_color(a):
     colors, count = np.unique(a.reshape(-1,a.shape[-1]), axis=0, return_counts=True)
     max_color = colors[count.argmax()]
@@ -23,7 +15,7 @@ def find_field_color(a):
 
 
 # Leggi l'immagine
-image = cv2.imread('my_img/original_img.jpg')
+image = cv2.imread('my_img/prov.jpg')
 field_color = find_field_color(image[400:700, 450:1400])
 #image = image[ROI["minX"]:ROI["maxX"], ROI["minY"]:ROI["maxY"]]
 
@@ -102,5 +94,6 @@ for p in field.values():
 
 # Visualizza l'immagine con i contorni del campo da tennis
 cv2.imshow('Tennis Field Edges', image)
+cv2.imwrite('find_field_color.jpg', image)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
