@@ -40,7 +40,7 @@ For more info, visit the project GitHub [CIT](apowdk).
 
 3. Run the project.
     ```bash
-    ./main.py
+    python3 src/main.py
     ```
     Arguments:
     - -v, --video: video path (default: "tennis_match.mp4"). 
@@ -49,7 +49,7 @@ For more info, visit the project GitHub [CIT](apowdk).
 
     Example
     ```bash
-    ./main.py --video ./tennis_match_2.mp4 --buffer 32 --yolo y
+    python3 src/main.py --video tennis_match_2.mp4 --buffer 32 --yolo y
     ```
 
 
