@@ -74,18 +74,22 @@ while True:
     if(len(tennis_field.pts) > BUFFER_POINTS):
         draw_trajectory(frame, tennis_field, ball, timer, court_mask_points)
     
+    # if bounce is detected
     if ball.bounce:
-        if counter.count_text == 0:
+        if counter.count_text == 0: # counter to avoid too near bounces
             cv2.circle(court_img, (ball.x_2d, ball.y_2d), 3, (0, 255, 0), 2)
             counter.count_text = MAX_TEXT_FRAMES
+        # ball.djoko is True when the ball has a dY lower than a threshold, therefore it is predicted to be a djokovic shot (bottom player shot)
         if ball.djoko and counter.count_djoko == 0:
             counter.count_djoko = MAX_DJOKO_FRAMES 
             tennis_field.current_shot = tennis_field.shot          
     
+    # if bounce is detected, print bounce string for some frames
     if counter.count_text > 0:
         cv2.putText(frame[200:900, 250:1700], "Bounce!", (int(ball.x) + 20, int(ball.y) - 20), cv2.FONT_HERSHEY_COMPLEX, 0.7, (0, 255, 0), 2)
         counter.count_text -= 1        
-        
+    
+    # for some frames, print info about bottom player shot
     if counter.count_djoko > 0: 
         compute_shot_type(frame, counter, tennis_field, ball)
 

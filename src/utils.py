@@ -120,6 +120,7 @@ def compute_shot_type(frame, counter, tennis_field, ball):
 
     """
     counter.count_djoko -= 1
+    # Read the shot direction only once in the 10 printing frames. After two frames, so that the ball has taken the right direction
     if counter.count_djoko == MAX_DJOKO_FRAMES-2:
         if ball.y < 250 and ball.y > 200:  # Area in which the ball is when bottom player is serving
             tennis_field.current_shot = "Serve"
@@ -379,7 +380,7 @@ def draw_trajectory(frame, tennis_field, ball, timer, court_mask_points):
 
                     ball.bounce = True
                     
-                if dY < -DJOKO_THRESH:
+                if dY < -DJOKO_THRESH: # Threshold to extract only djokovic shots (bottom player shots)
                     ball.djoko = True
 
             # update previous state trackers
