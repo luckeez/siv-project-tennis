@@ -15,13 +15,12 @@ from ultralytics import YOLO
 
 # USAGE
 # Arguments:
-# -v, --video: need to provide the video path. 
-# -b, --buffer: max buffer size for trajectory draw.
-# -y, --yolo: y/n to visualize or not yolo detection
+# -v, --video: video path (default: "tennis_match.mp4"). 
+# -b, --buffer: max buffer size for trajectory draw (default: 64).
+# -y, --yolo: y/n to visualize or not yolo detection (default: "n").
 # eg. ~/main.py --video ~/Images/tennis_match_2.mp4
 
 args = parse_args()
-args["video"] = "tennis_match_2.mp4"
 
 # init parameters
 tennis_field = TennisField(args)

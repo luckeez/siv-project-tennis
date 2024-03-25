@@ -9,7 +9,7 @@ from settings import *
 def parse_args():
     # arguments, need to provide the video link. eg. ~/main.py --video ~/Images/tennis_match_2.mp4
     ap = argparse.ArgumentParser()
-    ap.add_argument("-v", "--video", help="path to the (optional) video file")
+    ap.add_argument("-v", "--video", default="tennis_match.mp4", help="path to the (optional) video file")
     ap.add_argument("-b", "--buffer", type=int, default=64, help="max buffer size")
     ap.add_argument("-y", "--yolo", type=str, default="n", help="visualize yolo detection")
     args = vars(ap.parse_args())
