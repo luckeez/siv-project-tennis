@@ -4,8 +4,6 @@
     <img src="https://img.shields.io/badge/python-3670A0?style=flat&logo=python&logoColor=ffdd54" alt="Python"/>
 </div>
 
-# Table of contents
-
 # Introduction
 
 The goal of this project is to build a python script to analyze a tennis video, to track the tennis ball, detect players and identify shots. This work is based on a previous existent work, actually being an enhancement of it [CIT](apowdk). 
