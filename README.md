@@ -41,6 +41,15 @@ For more info, visit the project GitHub [CIT](apowdk).
 3. Run the project.
     ```bash
     ./main.py
+    ```
+    Arguments:
+    -v, --video: video path (default: "tennis_match.mp4"). 
+    -b, --buffer: max buffer size for trajectory draw (default: 64).
+    -y, --yolo: y/n to visualize or not yolo detection (default: "n").
+
+    Example
     ```bash
+    ./main.py --video ./tennis_match_2.mp4 --buffer 32 --yolo y
+    ```
 
 
