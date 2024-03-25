@@ -6,7 +6,7 @@
 
 # Introduction
 
-The goal of this project is to build a python script to analyze a tennis video, to track the tennis ball, detect players and identify shots. This work is based on a previous existent work, actually being an enhancement of it [CIT](apowdk). 
+The goal of this project is to build a python script to analyze a tennis video, to track the tennis ball, detect players and identify shots, using standard video processing techniques and a just little bit of ML (yolo). This work is based on a previous [existent work](https://github.com/DinosaurMauricio/tennis-ball-isv), actually being an enhancement of it.
 The script keeps previous obtained results, adjusts some of them and performs new computations to a deeper analysis of the tennis video.
 
 # Pre-existing features
@@ -15,7 +15,7 @@ The script keeps previous obtained results, adjusts some of them and performs ne
 - Trajectory drawing, for ball visual tracking
 - Direction and in/out detection and printing
 
-For more info, visit the project GitHub [CIT](apowdk).
+For more info, visit the [project GitHub](https://github.com/DinosaurMauricio/tennis-ball-isv).
 
 # New Features
 
